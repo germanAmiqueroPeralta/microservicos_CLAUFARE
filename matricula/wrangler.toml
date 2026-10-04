@@ -1,0 +1,37 @@
+# Microservicio MATRÍCULA: el corazón del escalamiento.
+# - Durable Objects: un objeto por sección controla las vacantes (sin sobrecupo).
+# - Queues: publica eventos para "notificaciones" sin hacer esperar al alumno.
+# - Service Binding: consulta la sección al servicio "cursos".
+name = "matricula-matricula"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+workers_dev = false
+preview_urls = false
+
+[vars]
+PERIODO = "2026-2"
+MAX_CREDITOS = "22"
+
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "DB_MATRICULA"
+database_name = "matricula-db"
+migrations_dir = "migrations"
+
+[[durable_objects.bindings]]
+name = "SECCION"
+class_name = "SeccionDO"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["SeccionDO"]
+
+[[queues.producers]]
+binding = "COLA"
+queue = "matricula-eventos"
+
+[[services]]
+binding = "CURSOS"
+service = "matricula-cursos"

@@ -1,0 +1,21 @@
+# Microservicio NOTIFICACIONES: consume la cola "matricula-eventos".
+# Si el servicio está caído, los mensajes se reintentan (hasta 30 veces) y no se pierden.
+name = "matricula-notificaciones"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+workers_dev = false
+preview_urls = false
+
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "DB_NOTIFICACIONES"
+database_name = "notificaciones-db"
+migrations_dir = "migrations"
+
+[[queues.consumers]]
+queue = "matricula-eventos"
+max_batch_size = 10
+max_batch_timeout = 2
+max_retries = 30

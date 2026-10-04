@@ -1,0 +1,8 @@
+{
+  "name": "@matricula/compartido",
+  "private": true,
+  "type": "module",
+  "description": "Librería común de los microservicios (middleware, trazas, seguridad). Se comparte código, nunca la base de datos.",
+  "exports": { ".": "./src/index.js" },
+  "peerDependencies": { "hono": "^4.6.0" }
+}

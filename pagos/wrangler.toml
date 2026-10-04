@@ -1,0 +1,26 @@
+# Microservicio PAGOS (pasarela simulada).
+# Verifica cada matrícula con el servicio de matrícula y publica eventos en la cola.
+name = "matricula-pagos"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+workers_dev = false
+preview_urls = false
+
+[vars]
+COSTO_POR_CREDITO = "50"
+
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "DB_PAGOS"
+database_name = "pagos-db"
+migrations_dir = "migrations"
+
+[[queues.producers]]
+binding = "COLA"
+queue = "matricula-eventos"
+
+[[services]]
+binding = "MATRICULA"
+service = "matricula-matricula"

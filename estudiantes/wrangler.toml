@@ -1,0 +1,15 @@
+# Microservicio ESTUDIANTES: identidad (alumnos y administradores) y perfiles.
+# Interno: no tiene URL pública, solo el gateway puede llamarlo.
+name = "matricula-estudiantes"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+workers_dev = false
+preview_urls = false
+
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "DB_ESTUDIANTES"
+database_name = "estudiantes-db"
+migrations_dir = "migrations"

@@ -1,0 +1,27 @@
+{
+  "name": "matricula-microservicios",
+  "private": true,
+  "description": "Sistema de matrícula UNI con microservicios en Cloudflare Workers",
+  "workspaces": [
+    "compartido",
+    "gateway",
+    "estudiantes",
+    "cursos",
+    "matricula",
+    "pagos",
+    "notificaciones",
+    "web"
+  ],
+  "scripts": {
+    "db:local": "node scripts/db-local.mjs",
+    "dev": "npm run build -w web && wrangler dev --persist-to .wrangler/state -c gateway/wrangler.toml -c estudiantes/wrangler.toml -c cursos/wrangler.toml -c matricula/wrangler.toml -c pagos/wrangler.toml -c notificaciones/wrangler.toml",
+    "dev:web": "npm run dev -w web",
+    "desplegar": "node scripts/deploy.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.40.0"
+  },
+  "overrides": {
+    "rollup": "npm:@rollup/wasm-node@^4.24.0"
+  }
+}

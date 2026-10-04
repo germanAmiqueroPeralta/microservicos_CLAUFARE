@@ -1,0 +1,7 @@
+{
+  "name": "estudiantes",
+  "private": true,
+  "type": "module",
+  "scripts": { "deploy": "wrangler deploy" },
+  "dependencies": { "@matricula/compartido": "*", "hono": "^4.6.0" }
+}
