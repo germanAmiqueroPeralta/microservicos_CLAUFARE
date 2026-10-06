@@ -5,10 +5,18 @@ import { existsSync } from 'node:fs';
 import { BASES, ORDEN_DESPLIEGUE, ejecutar, titulo } from './comun.mjs';
 
 const env = { ...process.env, CI: 'true' };
+// En GitHub Actions no hay navegador: se usa CLOUDFLARE_API_TOKEN y cualquier error detiene el despliegue.
+const enCI = Boolean(process.env.GITHUB_ACTIONS);
 
 // 1. Verificar sesión en Cloudflare
 titulo('1/6 Verificando tu sesión de Cloudflare');
-try {
+if (enCI) {
+  if (!process.env.CLOUDFLARE_API_TOKEN || !process.env.CLOUDFLARE_ACCOUNT_ID) {
+    console.error('Faltan los secretos CLOUDFLARE_API_TOKEN y/o CLOUDFLARE_ACCOUNT_ID en GitHub.');
+    process.exit(1);
+  }
+  console.log('Usando el API token de Cloudflare (CI) ✔');
+} else try {
   execSync('npx wrangler whoami', { stdio: 'pipe' }).toString().includes('You are logged in') || (() => { throw new Error(); })();
   console.log('Sesión iniciada ✔');
 } catch {
@@ -32,7 +40,7 @@ titulo('3/6 Compilando la página web (React)');
 try {
   ejecutar('npm run build -w web');
 } catch {
-  if (!existsSync('gateway/public/index.html')) process.exit(1);
+  if (enCI || !existsSync('gateway/public/index.html')) process.exit(1);
   console.log('\n⚠️  No se pudo compilar en esta PC. Se usará la página ya compilada que viene en gateway/public.');
 }
 
